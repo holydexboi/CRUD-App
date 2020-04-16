@@ -8,10 +8,19 @@ var express       = require("express"),
     app           = express(),
     User          = require("./models/user")
 
+mongoose.Promise = global.Promise;
+const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/crud_app';
+//console.log(process.env.MONGODB_URI);
+
+mongoose.connect(databaseUri, { useUnifiedTopology: true, useNewUrlParser: true  });
+
+mongoose.connection.on('connected', () => {
+	console.log('Mongoose is connected!!!');
+});
+
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
-mongoose.connect("mongodb://localhost/crud_app", { useUnifiedTopology: true, useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
 
 
